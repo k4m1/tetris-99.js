@@ -4,7 +4,7 @@ class Player {
         this.DROP_FAST = 50;
 
         this.tetris = tetris;
-        this.arena = tetris.arena;
+        this.playSpace = tetris.playSpace;
 
         this.dropCounter = 0;
         this.dropInterval = this.DROP_SLOW;
@@ -18,11 +18,11 @@ class Player {
 
     drop() {
         this.pos.y++;
-        if (this.arena.collide(this)) {
+        if (this.playSpace.collide(this)) {
             this.pos.y--;
-            this.arena.merge(this);
+            this.playSpace.merge(this);
             this.reset();
-            this.score += this.arena.sweep();
+            this.score += this.playSpace.sweep();
             this.tetris.updateScore(this.score);
         }
         this.dropCounter = 0;
@@ -30,7 +30,7 @@ class Player {
 
     move(dir) {
         this.pos.x += dir;
-        if (this.arena.collide(this)) {
+        if (this.playSpace.collide(this)) {
             this.pos.x -= dir;
         }
     }
@@ -39,10 +39,10 @@ class Player {
         const pieces = 'ILJOTSZ';
         this.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
         this.pos.y = 0;
-        this.pos.x = (this.arena.matrix[0].length / 2 | 0) -
+        this.pos.x = (this.playSpace.matrix[0].length / 2 | 0) -
             (this.matrix[0].length / 2 | 0);
-        if (this.arena.collide(this)) {
-            this.arena.clear();
+        if (this.playSpace.collide(this)) {
+            this.playSpace.clear();
             this.score = 0;
             updateScore();
         }
@@ -52,7 +52,7 @@ class Player {
         const pos = this.pos.x;
         let offset = 1;
         this._rotateMatrix(this.matrix, dir);
-        while (this.arena.collide(this)) {
+        while (this.playSpace.collide(this)) {
             this.pos.x += offset;
             offset = -(offset + (offset > 0 ? 1 : -1));
             if (offset > this.matrix[0].length) {

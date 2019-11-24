@@ -5,7 +5,7 @@ class Tetris {
         this.context = this.canvas.getContext('2d');
         this.context.scale(20, 20);
 
-        this.arena = new Arena(12, 20);
+        this.playSpace = new PlaySpace(12, 20);
         this.player = new Player(this);
 
         this.colors = [
@@ -38,7 +38,7 @@ class Tetris {
         this.context.fillStyle = '#000';
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.drawMatrix(this.arena.matrix, { x: 0, y: 0 });
+        this.drawMatrix(this.playSpace.matrix, { x: 0, y: 0 });
         this.drawMatrix(this.player.matrix, this.player.pos);
     }
 

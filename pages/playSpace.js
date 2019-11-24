@@ -1,4 +1,4 @@
-class Arena {
+class PlaySpace {
     constructor(w, h) {
         const matrix = [];
         while (h--) {
@@ -49,8 +49,8 @@ class Arena {
             this.matrix.unshift(row);
             ++y;
 
-            score += rowCount * 10;
-            rowCount *= 2;
+            score += rowCount * 100;
+            rowCount *= 20;
         }
         return score;
     }
