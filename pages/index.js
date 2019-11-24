@@ -12,6 +12,16 @@ const matrix = [
     [0,1,0],
 ];
 
+
+const collision(playArea, player) {
+    const [m, o] = [player.matrix, player.pos];
+    for (let y = 0; y < m.length; y++) {
+        for (let x = 0; x < m[y].length; x++) {
+            if (m[y][x] !== 0 && (playArea[y + o.y] && playArea[y + o.y][x + o.x]) !== 0)
+        }
+    }
+}
+
 const createMatrix = (width, height) => {
     const matrix = [];
     // while height is not 0
