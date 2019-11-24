@@ -1,4 +1,4 @@
-import { createTracing } from "trace_events";
+// import { createTracing } from "trace_events";
 
 const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
@@ -9,6 +9,18 @@ context.fillStyle = '#000';
 context.fillRect(0,0, canvas.clientWidth, canvas.height);
 
 
+const playAreaClear = () => {
+    outer: for (let y = playArea.length -1; y > 0; --y) {
+        for (let x = 0; x < playArea[y].length; ++x) {
+            if (playArea[y][x] === 0) {
+                continue outer;
+            }
+        }
+        const row = playArea.splice(y, 1)[0].fill[0];
+        playArea.unshift(row);
+        ++y;
+    }
+}
 
 
 const collision = (playArea, player) => {
@@ -88,7 +100,7 @@ const draw = () => {
     drawMatrix(player.matrix, player.pos)
 }
 
-const drawMatrix = (nmatrix, offset) => {
+const drawMatrix = (matrix, offset) => {
     
     matrix.forEach((row, y) => {
         row.forEach((value, x) => {
@@ -117,11 +129,12 @@ const playerDrop = () => {
         player.pos.y--;
         merge(playArea, player);
         playerReset();
+        playAreaClear();
     }
     dropCounter = 0;
 }
 
-const playerMove = direction => {
+const playerMovement = direction => {
     player.pos.x += direction;
     if (collision(playArea, player)) {
         player.pos.x -= direction;
