@@ -56,7 +56,14 @@ const player = {
 }
 
 document.addEventListener('keydown', e => {
-    console.log(event);
+    if (e.keyCode === 37) {
+        player.pos.x--;
+    } else if (e.keyCode === 39) {
+        player.pos.x++;
+    } else if (e.keyCode === 40) {
+        dropCounter = 0
+    }
+
 })
 
 update()
