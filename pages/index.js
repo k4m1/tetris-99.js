@@ -17,9 +17,13 @@ const collision(playArea, player) {
     const [m, o] = [player.matrix, player.pos];
     for (let y = 0; y < m.length; y++) {
         for (let x = 0; x < m[y].length; x++) {
-            if (m[y][x] !== 0 && (playArea[y + o.y] && playArea[y + o.y][x + o.x]) !== 0)
+            if (m[y][x] !== 0 && (playArea[y + o.y] && playArea[y + o.y][x + o.x]) !== 0) {
+                return true
+
+            }
         }
     }
+    return false
 }
 
 const createMatrix = (width, height) => {
@@ -64,7 +68,12 @@ const merge = (playArea, player) {
 
 const playerDrop = () => {
     player.pos.y++;
-    dropCounter = 0
+    if (collision(playArea, player)) {
+        player.pos.y__;
+        merge(playArea, player);
+        player.pos.y = 0;
+    }
+    dropCounter = 0;
 }
 
 let dropCounter = 0;
