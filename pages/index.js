@@ -107,11 +107,11 @@ const player = {
 // the 'down' control sets our 'dropCounter' to zero which tirggers a 'move' down one position
 document.addEventListener('keydown', e => {
     if (e.keyCode === 37) {
-        player.pos.x--;
+        playerMovement(-1);
     } else if (e.keyCode === 39) {
-        player.pos.x++;
+        playerMovement(1);
     } else if (e.keyCode === 40) {
-        dropCounter = 0
+        playerDrop()
     }
 
 })
