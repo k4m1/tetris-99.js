@@ -1,3 +1,5 @@
+import { createTracing } from "trace_events";
+
 const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
 
@@ -6,11 +8,7 @@ context.scale(20,20);
 context.fillStyle = '#000';
 context.fillRect(0,0, canvas.clientWidth, canvas.height);
 
-const matrix = [
-    [0,0,0],
-    [1,1,1],
-    [0,1,0],
-];
+
 
 
 const collision(playArea, player) {
@@ -34,6 +32,17 @@ const createMatrix = (width, height) => {
     }
     return matrix
 
+}
+
+const createTetris = type => {
+    if (type === 'T') {
+
+        return [
+            [0, 0, 0],
+            [1, 1, 1],
+            [0, 1, 0],
+        ];
+    }
 }
 
 
@@ -144,7 +153,7 @@ const playArea = createMatrix(12, 20);
 
 const player = {
     pos: { x: 5, y: 5},
-    matrix: matrix,
+    matrix: createTetris('T'),
 }
 
 // These event listners will move the player left or right by incremnting the x plane
