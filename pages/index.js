@@ -218,4 +218,16 @@ document.addEventListener('keydown', e => {
 
 })
 
+const colors = [
+null,
+'purple',
+'yellow',
+'blue',
+'orange',
+'light blue',
+'green',
+'red',
+
+]
+
 update()
