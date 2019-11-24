@@ -7,11 +7,11 @@ class PlaySpace {
         this.matrix = matrix;
     }
 
-    clear() {
+    clear = () => {
         this.matrix.forEach(row => row.fill(0));
     }
 
-    collide(player) {
+    collide = player => {
         const [m, o] = [player.matrix, player.pos];
         for (let y = 0; y < m.length; ++y) {
             for (let x = 0; x < m[y].length; ++x) {
@@ -25,7 +25,7 @@ class PlaySpace {
         return false;
     }
 
-    merge(player) {
+    merge = player => {
         player.matrix.forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value !== 0) {
@@ -35,7 +35,7 @@ class PlaySpace {
         });
     }
 
-    sweep() {
+    sweep = () => {
         let rowCount = 1;
         let score = 0;
         outer: for (let y = this.matrix.length - 1; y > 0; --y) {
