@@ -1,39 +1,58 @@
 class Player {
+    constructor(tetris) {
+        this.DROP_SLOW = 1000;
+        this.DROP_FAST = 50;
 
-    constructor() {
+        this.tetris = tetris;
+        this.arena = tetris.arena;
 
         this.dropCounter = 0;
-        this.dropInterval = 1000;
+        this.dropInterval = this.DROP_SLOW;
 
-        this.pos = {XMLDocument, y: 0};
+        this.pos = { x: 0, y: 0 };
         this.matrix = null;
         this.score = 0;
+
+        this.reset();
     }
 
-    movement = direction => {
-        this.pos.x += direction;
-        if (collision(playArea, this)) {
-            this.pos.x -= direction;
+    drop() {
+        this.pos.y++;
+        if (this.arena.collide(this)) {
+            this.pos.y--;
+            this.arena.merge(this);
+            this.reset();
+            this.score += this.arena.sweep();
+            this.tetris.updateScore(this.score);
+        }
+        this.dropCounter = 0;
+    }
+
+    move(dir) {
+        this.pos.x += dir;
+        if (this.arena.collide(this)) {
+            this.pos.x -= dir;
         }
     }
 
-
-    reset = () => {
-        const tetrises = "ILJOTSZ";
-        this.matrix = createTetris(tetrises[tetrises.length * Math.random() | 0]);
+    reset() {
+        const pieces = 'ILJOTSZ';
+        this.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
         this.pos.y = 0;
-        this.pos.x = (playArea[0].length / 2 | 0) - (this.matrix[0].length / 2 | 0);
-        if (collision(playArea, this)) {
-            playArea.clear();
-            this.score = 0
+        this.pos.x = (this.arena.matrix[0].length / 2 | 0) -
+            (this.matrix[0].length / 2 | 0);
+        if (this.arena.collide(this)) {
+            this.arena.clear();
+            this.score = 0;
             updateScore();
         }
     }
 
-    rotation = (direction) => {
-        let offset = 1
-        this._rotateMatrix(this.matrix, direction)
-        while (collision(playArea, this)) {
+    rotate(dir) {
+        const pos = this.pos.x;
+        let offset = 1;
+        this._rotateMatrix(this.matrix, dir);
+        while (this.arena.collide(this)) {
             this.pos.x += offset;
             offset = -(offset + (offset > 0 ? 1 : -1));
             if (offset > this.matrix[0].length) {
@@ -44,47 +63,30 @@ class Player {
         }
     }
 
-    _rotateMatrix = (matrix, direction) => {
-        for (let y = 0; y < matrix.length; y++) {
-            for (let x = 0; x < y; x++) {
+    _rotateMatrix(matrix, dir) {
+        for (let y = 0; y < matrix.length; ++y) {
+            for (let x = 0; x < y; ++x) {
                 [
                     matrix[x][y],
                     matrix[y][x],
                 ] = [
                         matrix[y][x],
                         matrix[x][y],
-                    ]
+                    ];
             }
         }
 
-        if (direction > 0) {
-            matrix.forEach(row => row.reverse())
+        if (dir > 0) {
+            matrix.forEach(row => row.reverse());
         } else {
             matrix.reverse();
         }
-
     }
 
-
-    drop = () => {
-        this.pos.y++;
-        if (collision(playArea, this)) {
-            this.pos.y--;
-            merge(playArea, this);
-            this.reset();
-            playArea.clear();
-            updateScore();
-        }
-        this.dropCounter = 0;
-    }
-
-    update = deltaTime => {
+    update(deltaTime) {
         this.dropCounter += deltaTime;
         if (this.dropCounter > this.dropInterval) {
-            this.drop()
+            this.drop();
         }
     }
-
 }
-
-
