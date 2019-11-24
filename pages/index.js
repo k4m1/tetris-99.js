@@ -40,6 +40,7 @@ const createMatrix = (width, height) => {
 const draw = () => {
     context.fillStyle = '#000';
     context.fillRect(0, 0, canvas.clientWidth, canvas.height);
+    drawMatrix(playArea, {x: 0, y: 0})
     drawMatrix(player.matrix, player.pos)
 }
 
