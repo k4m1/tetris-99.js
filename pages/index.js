@@ -116,7 +116,7 @@ const playerDrop = () => {
     if (collision(playArea, player)) {
         player.pos.y--;
         merge(playArea, player);
-        player.pos.y = 0;
+        playerReset();
     }
     dropCounter = 0;
 }
@@ -133,6 +133,9 @@ const playerReset = () => {
     player.matrix= createTetris(tetrises[tetrises.length * Math.random() | 0]);
     player.pos.y = 0;
     player.pos.x = (playArea[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
+    if (collision(playArea, player)) {
+        playArea.forEach(row => row.fill(0));
+    }
 }
 
 const playerRotation = (direction) => {
