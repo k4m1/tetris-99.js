@@ -41,6 +41,16 @@ const drawMatrix = (nmatrix, offset) => {
     });
 }
 
+const merge = (playArea, player) {
+    player.matrix.forEach((row, y) => {
+        row.forEach((value, x) => {
+            if (value !== 0 ) {
+                playArea[y + player.pos.y][x + player.pos.x] = value
+            }
+        })
+    })
+}
+
 
 const playerDrop = () => {
     player.pos.y++;
