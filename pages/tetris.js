@@ -129,77 +129,13 @@ const merge = (playArea, player) => {
     })
 }
 
-const rotate = (matrix, direction) => {
-    for (let y = 0; y < matrix.length; y++) {
-        for (let x = 0; x < y; x++) {
-            [
-                matrix[x][y],
-                matrix[y][x],
-            ] = [
-                    matrix[y][x],
-                    matrix[x][y],
-                ]
-        }
-    }
 
-    if (direction > 0) {
-        matrix.forEach(row => row.reverse())
-    } else {
-        matrix.reverse();
-    }
-
-}
-
-
-const playerDrop = () => {
-    player.pos.y++;
-    if (collision(playArea, player)) {
-        player.pos.y--;
-        merge(playArea, player);
-        playerReset();
-        playAreaClear();
-        updateScore();
-    }
-    dropCounter = 0;
-}
-
-
-
-
-const playerReset = () => {
-    const tetrises = "ILJOTSZ";
-    player.matrix = createTetris(tetrises[tetrises.length * Math.random() | 0]);
-    player.pos.y = 0;
-    player.pos.x = (playArea[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
-    if (collision(playArea, player)) {
-        playArea.forEach(row => row.fill(0));
-        player.score = 0
-        updateScore();
-    }
-}
-
-
-
-
-
-
-
-
-
-let dropCounter = 0;
-let dropInterval = 1000;
-let lastTime = 0
-
+let lastTime = 0;
 const update = (time = 0) => {
-    const deltatime = time - lastTime;
-    lastTime = time
-
-    dropCounter += deltatime
-    if (dropCounter > dropInterval) {
-        playerDrop()
-    }
-
+    const deltaTime = time - lastTime;
     lastTime = time;
+
+    player.update(deltaTime)
 
     draw();
     requestAnimationFrame(update);
@@ -220,7 +156,7 @@ document.addEventListener('keydown', e => {
     } else if (e.keyCode === 39) {
         player.movement(1);
     } else if (e.keyCode === 40) {
-        playerDrop()
+        player.drop()
     } else if (e.keyCode === 81) {
         player.rotation(-1)
     } else if (e.keyCode === 87) {
@@ -243,6 +179,6 @@ null,
 
 
  
-playerReset();
+player.reset();
 update();
 updateScore();
