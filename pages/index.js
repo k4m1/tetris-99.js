@@ -84,6 +84,10 @@ const playerMove = direction => {
     }
 }
 
+const playerRotation = (direction) => {
+    rotate(player.matrix, direction)
+}
+
 
 const rotate = (matrix, direction) => {
     for (let y = 0; y < matrix.length; y++ ) {
@@ -142,6 +146,10 @@ document.addEventListener('keydown', e => {
         playerMovement(1);
     } else if (e.keyCode === 40) {
         playerDrop()
+    } else if (e.keyCode === 81) {
+        playerRotation(-1)
+    } else if (e.keyCode === 87) {
+        playerRotation(1)
     }
 
 })
