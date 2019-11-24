@@ -16,26 +16,8 @@ class Player {
         this.reset();
     }
 
-    drop = () => {
-        this.pos.y++;
-        if (this.playSpace.collide(this)) {
-            this.pos.y--;
-            this.playSpace.merge(this);
-            this.reset();
-            this.score += this.playSpace.sweep();
-            this.tetris.updateScore(this.score);
-        }
-        this.dropCounter = 0;
-    }
 
-    move = dir => {
-        this.pos.x += dir;
-        if (this.playSpace.collide(this)) {
-            this.pos.x -= dir;
-        }
-    }
-
-    createPiece = type => {
+    createPiece(type) {
         if (type === 'T') {
             return [
                 [0, 0, 0],
@@ -78,6 +60,26 @@ class Player {
                 [0, 7, 7],
                 [0, 0, 0],
             ];
+        }
+    }
+
+
+    drop = () => {
+        this.pos.y++;
+        if (this.playSpace.collide(this)) {
+            this.pos.y--;
+            this.playSpace.merge(this);
+            this.reset();
+            this.score += this.playSpace.sweep();
+            this.tetris.updateScore(this.score);
+        }
+        this.dropCounter = 0;
+    }
+
+    move = dir => {
+        this.pos.x += dir;
+        if (this.playSpace.collide(this)) {
+            this.pos.x -= dir;
         }
     }
 

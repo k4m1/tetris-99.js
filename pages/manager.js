@@ -3,10 +3,9 @@ class Manager {
     constructor(document)
     {
         this.document = document
-
         this.template = document.getElementById('player-template')
-
         this.instances = []
+        
         const playerElements = document.querySelectorAll('.player');
         [...playerElements].forEach(element => {
             const tetris = new Tetris(element);
@@ -22,7 +21,13 @@ class Manager {
         const tetris = new Tetris(element);
         this.document.body.appendChild(tetris.element);
 
-        return tetris
-         
+        return tetris 
+    }
+
+    exterminatePlayer = tetris => {
+
+        this.instances.delete(tetris);
+        this.document.body.removeChild(tetris.element);
+        
     }
 }

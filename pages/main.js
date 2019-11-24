@@ -1,5 +1,6 @@
 const manager = new Manager(document)
-manager.createPlayer();
+const localTetris = manager.createPlayer();
+// manager.createPlayer();
 const keyListener = (event) => {
     [
         [65, 68, 81, 69, 83],
