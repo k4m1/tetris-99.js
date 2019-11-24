@@ -20,6 +20,7 @@ const playAreaClear = () => {
         const row = playArea.splice(y, 1)[0].fill[0];
         playArea.unshift(row);
         ++y;
+
         player.score += rowCount * 1000
         rowCount *= 200
     }
@@ -104,13 +105,14 @@ const draw = () => {
     drawMatrix(player.matrix, player.pos)
 }
 
-const drawMatrix = (matrix, offset) => {
-    
+function drawMatrix(matrix, offset) {
     matrix.forEach((row, y) => {
         row.forEach((value, x) => {
-            if (value != 0) {
+            if (value !== 0) {
                 context.fillStyle = colors[value];
-                context.fillRect(x + offset.x, y + offset.y, 1, 1);
+                context.fillRect(x + offset.x,
+                    y + offset.y,
+                    1, 1);
             }
         });
     });
