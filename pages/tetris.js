@@ -10,6 +10,7 @@ context.fillRect(0,0, canvas.clientWidth, canvas.height);
 
 
 const playAreaClear = () => {
+    let rowCount = 1;
     outer: for (let y = playArea.length -1; y > 0; --y) {
         for (let x = 0; x < playArea[y].length; ++x) {
             if (playArea[y][x] === 0) {
@@ -19,7 +20,10 @@ const playAreaClear = () => {
         const row = playArea.splice(y, 1)[0].fill[0];
         playArea.unshift(row);
         ++y;
+        player.score += rowCount * 1000
+        rowCount *= 200
     }
+
 }
 
 
@@ -130,6 +134,7 @@ const playerDrop = () => {
         merge(playArea, player);
         playerReset();
         playAreaClear();
+        updateScore();
     }
     dropCounter = 0;
 }
@@ -148,6 +153,8 @@ const playerReset = () => {
     player.pos.x = (playArea[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
     if (collision(playArea, player)) {
         playArea.forEach(row => row.fill(0));
+        player.score = 0
+        updateScore();
     }
 }
 
@@ -206,12 +213,17 @@ const update = (time = 0) => {
 
 }
 
+const updateScore = () => {
+    document.getElementById('score').innerText = player.score
+}
+
 const playArea = createMatrix(12, 20);
 
 
 const player = {
-    pos: { x: 5, y: 5},
-    matrix: createTetris('T'),
+    pos: { x: 0, y: 0},
+    matrix: null,
+    score: 0,
 }
 
 // These event listners will move the player left or right by incremnting the x plane
@@ -240,6 +252,9 @@ null,
 'light blue',
 'green',
 'red'
-]
+];
 
-update()
+ 
+playerReset();
+update();
+updateScore();
