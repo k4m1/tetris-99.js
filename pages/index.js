@@ -12,6 +12,16 @@ const matrix = [
     [0,1,0],
 ];
 
+const createMatrix = (width, height) => {
+    const matrix = [];
+    // while height is not 0
+    while (height--) {
+        matrix.push(new Array(width).fill(0));
+    }
+    return matrix
+
+}
+
 
 const draw = () => {
     context.fillStyle = '#000';
