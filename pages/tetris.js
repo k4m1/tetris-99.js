@@ -1,12 +1,10 @@
-// import { createTracing } from "trace_events";
-
 const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
 
 context.scale(20,20);
 
-context.fillStyle = '#000';
-context.fillRect(0,0, canvas.clientWidth, canvas.height);
+// context.fillStyle = '#000';
+// context.fillRect(0,0, canvas.clientWidth, canvas.height);
 
 
 const playAreaClear = () => {
@@ -21,20 +19,23 @@ const playAreaClear = () => {
         playArea.unshift(row);
         ++y;
 
-        player.score += rowCount * 1000
-        rowCount *= 200
+        player.score += rowCount * 100
+        rowCount *= 20
     }
 
 }
 
 
 const collision = (playArea, player) => {
-    const [m, o] = [player.matrix, player.pos];
+    const m = player.matrix;
+    const o = player.pos;
+
     for (let y = 0; y < m.length; y++) {
         for (let x = 0; x < m[y].length; x++) {
-            if (m[y][x] !== 0 && (playArea[y + o.y] && playArea[y + o.y][x + o.x]) !== 0) {
-                return true
-
+            if (m[y][x] !== 0 &&
+                (playArea[y + o.y] &&
+                    playArea[y + o.y][x + o.x]) !== 0) {
+                return true;
             }
         }
     }
@@ -97,14 +98,6 @@ const createTetris = type => {
     }
 }
 
-
-const draw = () => {
-    context.fillStyle = '#000';
-    context.fillRect(0, 0, canvas.clientWidth, canvas.height);
-    drawMatrix(playArea, {x: 0, y: 0})
-    drawMatrix(player.matrix, player.pos)
-}
-
 function drawMatrix(matrix, offset) {
     matrix.forEach((row, y) => {
         row.forEach((value, x) => {
@@ -118,6 +111,14 @@ function drawMatrix(matrix, offset) {
     });
 }
 
+const draw = () => {
+    context.fillStyle = '#000';
+    context.fillRect(0, 0, canvas.clientWidth, canvas.height);
+    drawMatrix(playArea, {x: 0, y: 0})
+    drawMatrix(player.matrix, player.pos)
+}
+
+
 const merge = (playArea, player) => {
     player.matrix.forEach((row, y) => {
         row.forEach((value, x) => {
@@ -126,6 +127,27 @@ const merge = (playArea, player) => {
             }
         })
     })
+}
+
+const rotate = (matrix, direction) => {
+    for (let y = 0; y < matrix.length; y++) {
+        for (let x = 0; x < y; x++) {
+            [
+                matrix[x][y],
+                matrix[y][x],
+            ] = [
+                    matrix[y][x],
+                    matrix[x][y],
+                ]
+        }
+    }
+
+    if (direction > 0) {
+        matrix.forEach(row => row.reverse())
+    } else {
+        matrix.reverse();
+    }
+
 }
 
 
@@ -141,6 +163,7 @@ const playerDrop = () => {
     dropCounter = 0;
 }
 
+
 const playerMovement = direction => {
     player.pos.x += direction;
     if (collision(playArea, player)) {
@@ -150,7 +173,7 @@ const playerMovement = direction => {
 
 const playerReset = () => {
     const tetrises = "ILJOTSZ";
-    player.matrix= createTetris(tetrises[tetrises.length * Math.random() | 0]);
+    player.matrix = createTetris(tetrises[tetrises.length * Math.random() | 0]);
     player.pos.y = 0;
     player.pos.x = (playArea[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
     if (collision(playArea, player)) {
@@ -159,6 +182,8 @@ const playerReset = () => {
         updateScore();
     }
 }
+
+
 
 const playerRotation = (direction) => {
     let offset = 1
@@ -175,31 +200,11 @@ const playerRotation = (direction) => {
 }
 
 
-const rotate = (matrix, direction) => {
-    for (let y = 0; y < matrix.length; y++ ) {
-        for (let x = 0; x < y; x++) {
-            [
-                matrix[x][y],
-                matrix[y][x],
-            ] = [
-                matrix[y][x], 
-                matrix[x][y],
-            ]
-        }
-    }
 
-    if (direction > 0) {
-        matrix.forEach(row => row.reverse())
-    } else {
-        matrix.reverse();
-    }
-
-}
 
 
 let dropCounter = 0;
 let dropInterval = 1000;
-
 let lastTime = 0
 
 const update = (time = 0) => {
@@ -210,23 +215,18 @@ const update = (time = 0) => {
     if (dropCounter > dropInterval) {
         playerDrop()
     }
+
+    lastTime = time;
+
     draw();
     requestAnimationFrame(update);
-
 }
 
 const updateScore = () => {
     document.getElementById('score').innerText = player.score
 }
 
-const playArea = createMatrix(12, 20);
 
-
-const player = {
-    pos: { x: 0, y: 0},
-    matrix: null,
-    score: 0,
-}
 
 // These event listners will move the player left or right by incremnting the x plane
 // the 'down' control sets our 'dropCounter' to zero which tirggers a 'move' down one position
@@ -255,6 +255,15 @@ null,
 'green',
 'red'
 ];
+
+const playArea = createMatrix(12, 20);
+
+
+const player = {
+    pos: { x: 0, y: 0 },
+    matrix: null,
+    score: 0,
+}
 
  
 playerReset();
