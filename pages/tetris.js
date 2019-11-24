@@ -42,16 +42,6 @@ const collision = (playArea, player) => {
     return false
 }
 
-const createMatrix = (width, height) => {
-    const matrix = [];
-    // while height is not 0
-    while (height--) {
-        matrix.push(new Array(width).fill(0));
-    }
-    return matrix
-
-}
-
 const createTetris = type => {
     if (type === 'T') {
         return [
