@@ -43,3 +43,11 @@ function createPiece(type) {
         ];
     }
 }
+
+const tetri = [];
+
+const playerElements = document.querySelectorAll('.player');
+[...playerElements].forEach(element => {
+    const tetris = new Tetris(element);
+    tetri.push(tetris);
+});
