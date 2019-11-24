@@ -77,6 +77,13 @@ const playerDrop = () => {
     dropCounter = 0;
 }
 
+const playerMove = direction => {
+    player.pos.x += direction;
+    if (collision(playArea, player)) {
+        player.pos.x -= direction;
+    }
+}
+
 let dropCounter = 0;
 let dropInterval = 1000;
 
