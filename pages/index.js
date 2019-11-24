@@ -31,6 +31,12 @@ const drawMatrix = (nmatrix, offset) => {
     });
 }
 
+
+const playerDrop = () => {
+    player.pos.y++;
+    dropCounter = 0
+}
+
 let dropCounter = 0;
 let dropInterval = 1000;
 
@@ -42,8 +48,7 @@ const update = (time = 0) => {
 
     dropCounter += deltatime
     if (dropCounter > dropInterval) {
-        player.pos.y++;
-        dropCounter = 0;
+        playerDrop()
     }
     draw();
     requestAnimationFrame(update);
@@ -55,6 +60,8 @@ const player = {
     matrix: matrix,
 }
 
+// These event listners will move the player left or right by incremnting the x plane
+// the 'down' control sets our 'dropCounter' to zero which tirggers a 'move' down one position
 document.addEventListener('keydown', e => {
     if (e.keyCode === 37) {
         player.pos.x--;
