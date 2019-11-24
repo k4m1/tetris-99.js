@@ -31,7 +31,20 @@ const drawMatrix = (nmatrix, offset) => {
     });
 }
 
-const update = () => {
+let dropCounter = 0;
+let dropInterval = 1000;
+
+let lastTime = 0
+
+const update = (time = 0) => {
+    const deltatime = time - lastTime;
+    lastTime = time
+
+    dropCounter += deltatime
+    if (dropCounter > dropInterval) {
+        player.pos.y++;
+        dropCounter = 0;
+    }
     draw();
     requestAnimationFrame(update);
 
