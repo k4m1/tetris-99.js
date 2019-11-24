@@ -10,12 +10,19 @@ class Manager {
         const playerElements = document.querySelectorAll('.player');
         [...playerElements].forEach(element => {
             const tetris = new Tetris(element);
-            tetri.push(tetris);
+            this.instances.push(tetris);
     });
     }
 
     createPlayer = () => {
-        cosnt element = this.document.importNode(this.template.content, true)
+        const element = this.document
+        .importNode(this.template.content, true)
+        .children[0];
+
+        const tetris = new Tetris(element);
+        this.document.body.appendChild(tetris.element);
+
+        return tetris
          
     }
 }
