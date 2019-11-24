@@ -128,6 +128,13 @@ const playerMove = direction => {
     }
 }
 
+const playerReset = () => {
+    const tetrises = "ILJOTSZ";
+    player.matrix= createTetris(tetrises[tetrises.length * Math.random() | 0]);
+    player.pos.y = 0;
+    player.pos.x = (playArea[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
+}
+
 const playerRotation = (direction) => {
     let offset = 1
     rotate(player.matrix, direction)
