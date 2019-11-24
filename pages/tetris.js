@@ -180,19 +180,7 @@ const playerReset = () => {
 
 
 
-const playerRotation = (direction) => {
-    let offset = 1
-    rotate(player.matrix, direction)
-    while (collision(playArea, player)) {
-        player.pos.x += offset;
-        offset = -(offset + (offset > 0 ? 1 : -1));
-        if (offset > player.matrix[0].length) {
-            rotate(player.matrix, -dir);
-            player.pos.x = pos;
-            return;
-        }
-    }
-}
+
 
 
 
@@ -221,21 +209,22 @@ const updateScore = () => {
     document.getElementById('score').innerText = player.score
 }
 
-
+const playArea = createMatrix(12, 20);
+const player = new Player;
 
 // These event listners will move the player left or right by incremnting the x plane
 // the 'down' control sets our 'dropCounter' to zero which tirggers a 'move' down one position
 document.addEventListener('keydown', e => {
     if (e.keyCode === 37) {
-        playerMovement(-1);
+        player.movement(-1);
     } else if (e.keyCode === 39) {
-        playerMovement(1);
+        player.movement(1);
     } else if (e.keyCode === 40) {
         playerDrop()
     } else if (e.keyCode === 81) {
-        playerRotation(-1)
+        player.rotation(-1)
     } else if (e.keyCode === 87) {
-        playerRotation(1)
+        player.rotation(1)
     }
 
 })
@@ -251,10 +240,7 @@ null,
 'red'
 ];
 
-const playArea = createMatrix(12, 20);
 
-
-const player = new Player
 
  
 playerReset();
