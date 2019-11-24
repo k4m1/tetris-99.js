@@ -24,7 +24,7 @@ class Player {
         this.pos.y = 0;
         this.pos.x = (playArea[0].length / 2 | 0) - (this.matrix[0].length / 2 | 0);
         if (collision(playArea, this)) {
-            playArea.forEach(row => row.fill(0));
+            playArea.clear();
             this.score = 0
             updateScore();
         }
@@ -71,8 +71,8 @@ class Player {
         if (collision(playArea, this)) {
             this.pos.y--;
             merge(playArea, this);
-            player.reset();
-            playAreaClear();
+            this.reset();
+            playArea.clear();
             updateScore();
         }
         this.dropCounter = 0;
