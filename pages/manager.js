@@ -15,7 +15,7 @@ class Manager {
     }
 
     createPlayer = () => {
-        cosnt element = this.document.importNode(this.template.content)
+        cosnt element = this.document.importNode(this.template.content, true)
          
     }
 }
