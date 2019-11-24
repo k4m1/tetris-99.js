@@ -164,12 +164,7 @@ const playerDrop = () => {
 }
 
 
-const playerMovement = direction => {
-    player.pos.x += direction;
-    if (collision(playArea, player)) {
-        player.pos.x -= direction;
-    }
-}
+
 
 const playerReset = () => {
     const tetrises = "ILJOTSZ";
@@ -259,11 +254,7 @@ null,
 const playArea = createMatrix(12, 20);
 
 
-const player = {
-    pos: { x: 0, y: 0 },
-    matrix: null,
-    score: 0,
-}
+const player = new Player
 
  
 playerReset();

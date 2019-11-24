@@ -6,6 +6,13 @@ class player {
         this.score = 0;
     }
 
+    movement = direction => {
+        this.pos.x += direction;
+        if (collision(playArea, this)) {
+            this.pos.x -= direction;
+        }
+    }
+
 }
 
 
