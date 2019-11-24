@@ -69,7 +69,7 @@ const merge = (playArea, player) {
 const playerDrop = () => {
     player.pos.y++;
     if (collision(playArea, player)) {
-        player.pos.y__;
+        player.pos.y--;
         merge(playArea, player);
         player.pos.y = 0;
     }
