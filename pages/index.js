@@ -14,7 +14,8 @@ const matrix = [
 
 
 const draw = () => {
-
+    context.fillStyle = '#000';
+    context.fillRect(0, 0, canvas.clientWidth, canvas.height);
     drawMatrix(player.matrix, player.pos)
 }
 
