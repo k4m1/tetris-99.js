@@ -65,6 +65,9 @@ const update = (time = 0) => {
 
 }
 
+const playArea = createMatrix(12, 20);
+
+
 const player = {
     pos: { x: 5, y: 5},
     matrix: matrix,
