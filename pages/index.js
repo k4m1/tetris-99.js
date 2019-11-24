@@ -11,7 +11,7 @@ context.fillRect(0,0, canvas.clientWidth, canvas.height);
 
 
 
-const collision(playArea, player) {
+const collision = (playArea, player) => {
     const [m, o] = [player.matrix, player.pos];
     for (let y = 0; y < m.length; y++) {
         for (let x = 0; x < m[y].length; x++) {
@@ -93,14 +93,14 @@ const drawMatrix = (nmatrix, offset) => {
     matrix.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value != 0) {
-                context.fillStyle = 'red';
+                context.fillStyle = colors[value];
                 context.fillRect(x + offset.x, y + offset.y, 1, 1);
             }
         });
     });
 }
 
-const merge = (playArea, player) {
+const merge = (playArea, player) => {
     player.matrix.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value !== 0 ) {
@@ -226,8 +226,7 @@ null,
 'orange',
 'light blue',
 'green',
-'red',
-
+'red'
 ]
 
 update()
