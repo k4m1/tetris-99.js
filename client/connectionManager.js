@@ -69,7 +69,7 @@ class ConnectionManager {
         const clients = peers.clients.filter(client => me !== client.id);
         clients.forEach(client => {
             if (!this.peers.has(client.id)) {
-                const tetris = this.tetrisManager.createPlayer();
+                const tetris = this.manager.createPlayer();
                 tetris.unserialize(client.state);
                 this.peers.set(client.id, tetris);
             }
@@ -85,6 +85,14 @@ class ConnectionManager {
         const local = this.tetrisManager.instances[0];
         const sorted = peers.clients.map(client => this.peers.get(client.id) || local);
         this.tetrisManager.sortPlayers(sorted);
+    }
+
+    updateChild = (id, fragment, [key,value]) => {
+        if (!this.peers.has(id)) {
+            throw new Error('where are thou client?', id);
+        }
+
+        const tetris = this.peers.get(id);
     }
 
     send = data => {
