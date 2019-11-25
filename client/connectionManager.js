@@ -59,6 +59,21 @@ class ConnectionManager {
         });
     }
 
+    updateDad = peers => {
+        const me = peers.you;
+        const clients = peers.clients.filter(client => me !== client.id);
+        clients.forEach(client => {
+            if (!this.peers.has(client.id)) {
+                const tetris = this.tetrisManager.createPlayer();
+                tetris.unserialize(client.state);
+                this.peers.set(client.id, tetris);
+            }
+        });
+
+        [...this.peers.entries]
+
+    }
+
     send = data => {
         const msg = JSON.stringify(data);
         console.log(snding msg);
