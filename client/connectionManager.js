@@ -93,11 +93,29 @@ class ConnectionManager {
         }
 
         const tetris = this.peers.get(id);
+        tetris[fragment][key] = value;
+
+        if (key === 'score') {
+            tetris.updateScore(value);
+        } else {
+            tetris.draw();
+        }
+    }
+
+    receive = msg => {
+        const data = JSON.parse(msg);
+        if (data.type === 'session-created') {
+            window.location.hash = data.id;
+        } else if (data.type === 'session-broadcast') {
+            this.updateDad(data.peers);
+        } else if (data.type === 'state-update') {
+            this.updateChild(data.clientId, data.fragment, data.state);
+        }
     }
 
     send = data => {
         const msg = JSON.stringify(data);
-        console.log(snding msg);
+        console.log('snding msg');
         this.connection.send(msg);
     }
 }
