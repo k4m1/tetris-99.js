@@ -70,7 +70,12 @@ class ConnectionManager {
             }
         });
 
-        [...this.peers.entries]
+         [...this.peers.entries()].forEach(([id, tetris]) => {
+            if (!clients.some(client => client.id === id)) {
+                this.tetrisManager.removePlayer(tetris);
+                this.peers.delete(id);
+            }
+        });
 
     }
 
