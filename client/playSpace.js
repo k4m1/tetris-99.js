@@ -5,10 +5,12 @@ class PlaySpace {
             matrix.push(new Array(w).fill(0));
         }
         this.matrix = matrix;
+        this.events = new this.events;
     }
 
     clear = () => {
         this.matrix.forEach(row => row.fill(0));
+        this.events.emit('matrix', this.matrix)
     }
 
     collide = player => {
@@ -33,6 +35,7 @@ class PlaySpace {
                 }
             });
         });
+        this.events.emit('matrix', this.matrix);
     }
 
     sweep = () => {
@@ -52,6 +55,7 @@ class PlaySpace {
             score += rowCount * 100;
             rowCount *= 20;
         }
+        this.events.emit('matrix', this.matrix);
         return score;
     }
 }

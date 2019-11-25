@@ -1,8 +1,12 @@
 class ConnectionManager {
 
-    constructor()
+    constructor(manager)
     {
         this.connection = null;
+        this.peers = new Map;
+
+        this.manager = manager;
+        this.localTetris = this.manager.instances[0];
     }
 
     connect = address => {
@@ -10,6 +14,7 @@ class ConnectionManager {
 
         this.connection.addEventListener('open', () => {
             console.log('connection established');
+            this.initSession()
 
             this.connection.send('create-session')
         })
