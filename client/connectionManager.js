@@ -14,13 +14,49 @@ class ConnectionManager {
 
         this.connection.addEventListener('open', () => {
             console.log('connection established');
-            this.initSession()
-
-            this.connection.send('create-session')
+            this.initSession();
+            this.watchEvents();
         })
         this.connection.addEventListener('message', e => {
             console.log('recv msg', event.data)
+            this.receive(event.data);
         })
+    }
+
+    initSession = () => {
+        const sessionId = window.location.hash.split('#')[1];
+        const state = this.localTetris.serialize();
+        if (sessionId) {
+            this.send({
+                type: 'join-session',
+                state,
+            });
+        }
+    }
+
+    watchEvents = () => {
+        const local = this.tetrisManager.instances[0];
+        const player = local.player;
+        ['pos', 'matrix', 'score'].forEach(key => {
+            player.events.listen(key, () => {
+                this.send({
+                    type: 'state-update',
+                    fragement: 'player',
+                    state: [key, player[key]],
+                });
+            });
+        });
+
+        const playSpace = local.playSpace;
+        ['matrix'].forEach(key => {
+            playSpace.events.listen(ket, () => {
+                this.send({
+                    type: 'state-update',
+                    fragement: 'playSpace',
+                    state: [key, playSpace[key]],
+                });
+            });
+        });
     }
 
     send = data => {
