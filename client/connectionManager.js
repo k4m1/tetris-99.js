@@ -10,6 +10,7 @@ class ConnectionManager {
 
         this.connection.addEventListener('open', () => {
             console.log('connection established');
+
             this.connection.send('create-session')
         })
     }
