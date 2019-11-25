@@ -2,7 +2,7 @@
   "name": "websocket-tetris",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "dev": "next",
     "build": "next build",
@@ -22,6 +22,7 @@
   "dependencies": {
     "next": "^9.1.4",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "ws": "^7.2.0"
   }
 }

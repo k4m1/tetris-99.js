@@ -85,7 +85,7 @@ class Player {
 
     reset = () => {
         const pieces = 'ILJOTSZ';
-        this.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
+        this.matrix = this.createPiece(pieces[pieces.length * Math.random() | 0]);
         this.pos.y = 0;
         this.pos.x = (this.playSpace.matrix[0].length / 2 | 0) -
             (this.matrix[0].length / 2 | 0);
