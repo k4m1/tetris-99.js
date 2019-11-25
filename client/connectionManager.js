@@ -77,6 +77,9 @@ class ConnectionManager {
             }
         });
 
+        const local = this.tetrisManager.instances[0];
+        const sorted = peers.clients.map(client => this.peers.get(client.id) || local);
+        this.tetrisManager.sortPlayers(sorted);
     }
 
     send = data => {
