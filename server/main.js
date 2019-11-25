@@ -10,6 +10,14 @@ class Session {
     }
 }
 
+createId = (length = 6, chars = 'abcdefghjkmopqrstwxyz1234567890') {
+    let id = '';
+    while (len--) {
+        id += chars[Math.random() * chars.length | 0];
+    }
+    return id
+}
+
 
 server.on('connection', connection => {
     console.log('connected')
@@ -18,7 +26,8 @@ server.on('connection', connection => {
         console.log('mesg recived', msg)
 
         if (msg === 'create-session') {
-            const sessions = new Session('alakazam');
+            const id = createId()
+            const sessions = new Session(id);
             sessions.set(session.is, session);
             console.log(sessions)
         }
