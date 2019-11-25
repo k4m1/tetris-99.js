@@ -31,6 +31,11 @@ class ConnectionManager {
                 type: 'join-session',
                 state,
             });
+        } else {
+            this.send({
+                type: 'create-session',
+                state,
+            });
         }
     }
 
