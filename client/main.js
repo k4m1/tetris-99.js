@@ -6,9 +6,8 @@ ConnectionManager.connect('ws://localhost:42069')
 const keyListener = (event) => {
     [
         [65, 68, 81, 69, 83],
-        [72, 75, 89, 73, 74],
     ].forEach((key, index) => {
-        const player = manager[index].player;
+        const player = localTetris.player;
         if (event.type === 'keydown') {
             if (event.keyCode === key[0]) {
                 player.move(-1);
