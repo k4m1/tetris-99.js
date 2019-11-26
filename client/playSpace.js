@@ -38,7 +38,7 @@ class PlaySpace {
         this.events.emit('matrix', this.matrix);
     }
 
-    sweep = () => {
+    clean = () => {
         let rowCount = 1;
         let score = 0;
         outer: for (let y = this.matrix.length - 1; y > 0; --y) {
