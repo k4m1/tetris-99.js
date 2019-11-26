@@ -3,6 +3,7 @@ class Player {
         this.DROP_SLOW = 1000;
         this.DROP_FAST = 50;
 
+        this.events = new Events;
         this.tetris = tetris;
         this.playSpace = tetris.playSpace;
 
@@ -71,16 +72,19 @@ class Player {
             this.playSpace.merge(this);
             this.reset();
             this.score += this.playSpace.sweep();
-            this.tetris.updateScore(this.score);
+            this.events.emit('score', this.score);
+            return
         }
-        this.dropCounter = 0;
+        this.events.emit('pos', this.pos);
     }
 
     move = dir => {
         this.pos.x += dir;
         if (this.playSpace.collide(this)) {
             this.pos.x -= dir;
+            return;
         }
+        this.events.emit('pos', this.pos)
     }
 
     reset = () => {
@@ -92,8 +96,11 @@ class Player {
         if (this.playSpace.collide(this)) {
             this.playSpace.clear();
             this.score = 0;
-            this.tetris.updateScore(this.score);
+            this.events.emit('score', this.score);
         }
+
+        this.events.emit('pos', this.pos);
+        this.events.emit('matrix', this.matrix);
     }
 
     rotate = dir => {
