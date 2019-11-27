@@ -58,4 +58,32 @@ class Tetris {
     updateScore(score) {
         this.element.querySelector('.score').innerText = score;
     }
+
+    run = () => {
+        this.update();
+    }
+
+    serialize = () => {
+        return {
+            playArea: {
+                matrix: this.playArea.matrix,
+            },
+            player: {
+                matrix: this.player.matrix,
+                pos: this.player.pos,
+                score: this.player.score,
+            },
+        };
+    }
+
+    unserialize = state => {
+        this.playArea = Object.assign(state.playArea);
+        this.player = Object.assign(state.player);
+        this.updateScore(this.player.score);
+        this.draw();
+    }
+
+    updateScore = score => {
+        this.element.querySelector('.score').innerText = score;
+    }
 }

@@ -116,6 +116,7 @@ class Player {
                 return;
             }
         }
+        this.events.emit('matrix', this.matrix);
     }
 
     _rotateMatrix = (matrix, dir) => {

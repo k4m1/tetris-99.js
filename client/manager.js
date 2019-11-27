@@ -6,11 +6,6 @@ class Manager {
         this.template = document.getElementById('player-template')
         this.instances = []
         
-        const playerElements = document.querySelectorAll('.player');
-        [...playerElements].forEach(element => {
-            const tetris = new Tetris(element);
-            this.instances.push(tetris);
-    });
     }
 
     createPlayer = () => {
@@ -26,8 +21,14 @@ class Manager {
 
     exterminatePlayer = tetris => {
 
-        this.instances.delete(tetris);
         this.document.body.removeChild(tetris.element);
         
+        this.instances = this.instances.filer(instance => instance !== tetris);
+    }
+
+    sortPlayers(tetri) {
+        tetri.forEach(tetris => {
+            this.document.body.appendChild(tetris.element);
+        })
     }
 }
