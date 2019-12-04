@@ -5,31 +5,33 @@ class Tetris {
         this.context = this.canvas.getContext('2d');
         this.context.scale(20, 20);
 
-        this.playSpace = new PlaySpace(12, 20);
+        this.arena = new Arena(12, 20);
         this.player = new Player(this);
+        this.player.events.listen('score', score => {
+            this.updateScore(score);
+        });
 
         this.colors = [
             null,
-            'red',
-            'green',
-            'blue',
-            'yellow',
-            'indigo',
-            'violet',
-            'pink',
+            '#FF0D72',
+            '#0DC2FF',
+            '#0DFF72',
+            '#F538FF',
+            '#FF8E0D',
+            '#FFE138',
+            '#3877FF',
         ];
 
         let lastTime = 0;
-        const update = (time = 0) => {
+        this._update = (time = 0) => {
             const deltaTime = time - lastTime;
             lastTime = time;
 
             this.player.update(deltaTime);
 
             this.draw();
-            requestAnimationFrame(update);
+            requestAnimationFrame(this._update);
         };
-        update();
 
         this.updateScore(0);
     }

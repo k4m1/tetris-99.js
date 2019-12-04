@@ -28,12 +28,11 @@ class Client {
   }
 
   send = data => {
-        const msg = JSON.stringify(data);
-
+      const msg = JSON.stringify(data);
       console.log('putting the letter in the mail box')
       this.comm.send(msg, function ack(err) {
           if (err) {
-              console.error('msg fail', msg, err)
+              console.log('msg fail', msg, err)
           }
       })
   }

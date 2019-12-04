@@ -1,47 +1,101 @@
 const WebSocketServer = require('ws').Server;
-const session = require('./session')
-const client = require('./client')
+const Session = require('./session');
+const Client = require('./client');
 
-const server = new WebSocketServer({port: 42069})
+const server = new WebSocketServer({ port: 9000 });
 
 const sessions = new Map;
 
-
-
-createId = (length = 6, chars = 'abcdefghjkmopqrstwxyz1234567890') {
+function createId(len = 6, chars = 'abcdefghjkmnopqrstvwxyz01234567890') {
     let id = '';
     while (len--) {
         id += chars[Math.random() * chars.length | 0];
     }
-    return id
+    return id;
 }
 
+function createClient(conn, id = createId()) {
+    return new Client(conn, id);
+}
 
-server.on('connection', connection => {
-    console.log('connected')
-    const client = new Client(connection);
+function createSession(id = createId()) {
+    if (sessions.has(id)) {
+        throw new Error(`Session ${id} already exists`);
+    }
 
-    connection.on('message', msg => {
-        console.log('mesg recived', msg)
+    const session = new Session(id);
+    console.log('Creating session', session);
 
-        if (msg === 'create-session') {
-            const id = createId()
-            const sessions = new Session(id);
+    sessions.set(id, session);
+
+    return session;
+}
+
+function getSession(id) {
+    return sessions.get(id);
+}
+
+function broadcastSession(session) {
+    const clients = [...session.clients];
+    clients.forEach(client => {
+        client.send({
+            type: 'session-broadcast',
+            peers: {
+                you: client.id,
+                clients: clients.map(client => {
+                    return {
+                        id: client.id,
+                        state: client.state,
+                    }
+                }),
+            },
+        });
+    });
+}
+
+server.on('connection', conn => {
+    console.log('Connection established');
+    const client = createClient(conn);
+
+    conn.on('message', msg => {
+        console.log('Message received', msg);
+        const data = JSON.parse(msg);
+
+        if (data.type === 'create-session') {
+            const session = createSession();
             session.join(client);
-            sessions.set(session.is, session);
-            client.send(session.id)
-        }
-    })
 
-    connection.on('close', () => {
-        console.log('disconnected')
-        cinst session = client.session;
+            client.state = data.state;
+            client.send({
+                type: 'session-created',
+                id: session.id,
+            });
+        } else if (data.type === 'join-session') {
+            const session = getSession(data.id) || createSession(data.id);
+            session.join(client);
+
+            client.state = data.state;
+            broadcastSession(session);
+        } else if (data.type === 'state-update') {
+            const [key, value] = data.state;
+            client.state[data.fragment][key] = value;
+            client.broadcast(data);
+        }
+
+    });
+
+    conn.on('close', () => {
+        console.log('Connection closed');
+        const session = client.session;
         if (session) {
-            client.leave(client)
+            session.leave(client);
             if (session.clients.size === 0) {
-                sessions.delete(session.id)
+                sessions.delete(session.id);
             }
         }
 
+        broadcastSession(session);
+
+        console.log(sessions);
     });
 });

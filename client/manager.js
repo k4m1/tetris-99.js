@@ -10,8 +10,8 @@ class Manager {
 
     createPlayer = () => {
         const element = this.document
-        .importNode(this.template.content, true)
-        .children[0];
+            .importNode(this.template.content, true)
+            .children[0];
 
         const tetris = new Tetris(element);
         this.document.body.appendChild(tetris.element);
