@@ -1,5 +1,5 @@
-const tetrisManager = new TetrisManager(document);
-const tetrisLocal = tetrisManager.createPlayer();
+const manager = new Manager(document);
+const tetrisLocal = Manager.createPlayer();
 tetrisLocal.element.classList.add('local');
 tetrisLocal.run();
 
